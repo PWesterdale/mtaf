@@ -7,7 +7,7 @@ My mind is spinning on this in terms of possibilities that it opens, so please f
 
 ### But what does it do?
 At the minute, not a lot other than prove some concepts and ideas.
-`npm run test` and looking through the __tests__ folder should give you a good guess :)
+`npm run test` and looking through the `__tests__` folder should give you a good guess :)
 
 ### Example Journey Explained
 
