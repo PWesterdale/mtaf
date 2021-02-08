@@ -11,7 +11,7 @@ function isThing(val, lang) {
     return validationResult(false, lang)
 }
 
-function validateWithRules(rules) {
+function compressValidationResults(rules) {
     return rules.reduce((acc, result) => {
         if(!result.isValid) {
             acc.isValid = false;
@@ -25,44 +25,59 @@ function mathematicOperation(val, param, operation) {
     const value = Number(val);
     switch(operation) {
         case 'gt':
-            return val > param;
+            return value > param;
         case 'lt':
-            return val < param;
+            return value < param;
     }
 }
 
-module.exports.isGreaterThan = ( val, param, lang ) => {
+function isGreaterThan( val, param, lang ) {
     const isGreaterThan = (val, param, lang) => {
         const operationResult = mathematicOperation(val, param, 'gt');
         return validationResult(operationResult, !operationResult && lang)
     }
-    return validateWithRules([
+    return compressValidationResults([
         isThing(val),
         isGreaterThan(val, param, lang)
     ])
 }
 
-module.exports.isLessThan = ( val, param, lang ) => {
+function isLessThan( val, param, lang ) {
     const isLessThan = (val, param, lang) => {
         const operationResult = mathematicOperation(val, param, 'lt');
         return validationResult(operationResult, !operationResult && lang)
     }
-    return validateWithRules([
+    return compressValidationResults([
         isThing(val),
         isLessThan(val, param, lang)
     ])
 }
 
-module.exports.isEmail = (val, lang) =>  {
+function isValidEmail(val, lang) {
     const isRealEmail = (val, lang) => {
         const operationResult = isEmail(val);
         return validationResult(operationResult, !operationResult && lang);
     }
-    return validateWithRules([
+    return compressValidationResults([
         isThing(val),
         isRealEmail(val, lang)
     ])
 }
 
-module.exports.isThing = isThing;
-module.exports.validateWithRules = validateWithRules;
+const rules = {
+    isEmail: isValidEmail,
+    isLessThan: isLessThan,
+    isGreaterThan: isGreaterThan,
+    isThing: isThing
+}
+
+module.exports.compressValidationResults = compressValidationResults
+
+module.exports.validate = (validations, input) => {
+    const validateFns = validations.map((vString) => {
+        const values = vString.split('|');
+        const rule = values.shift();
+        return rules[rule](input, ...values);
+    })
+    return compressValidationResults(validateFns)
+}

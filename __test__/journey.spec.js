@@ -5,19 +5,19 @@ const { getJourneyPosition } = require('../journey/index');
 
 describe("Journey as code", () => {
     it("should be able to find a users place in the journey by validation routines", () => {
-        const position = getJourneyPosition({
+        const screen = getJourneyPosition({
             firstName: 'Paul'
         }, baseJourney);
-        expect(position.stage).toBe(0);
+        expect(screen.id).toBe('start');
     }) 
 
     it("should be able to determine a journey is complete", () => {
-        const position = getJourneyPosition({
+        const screen = getJourneyPosition({
             firstName: 'Paul',
             lastName: 'Westerdale',
-            gt10: '11'
+            randomNumber: '11'
         }, baseJourney);
-        expect(position.stage).toBe(2);
-        expect(position.isComplete).toBe(true);
+        expect(screen.id).toBe('underFifty');
+        expect(screen.terminates).toBe(true);
     }) 
 })
