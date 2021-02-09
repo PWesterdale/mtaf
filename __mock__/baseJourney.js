@@ -61,14 +61,20 @@ module.exports = {
         {
             id: 'underFifty',
             components: [
-                TextComponent('Less than', 'You chose a number less than fifty')
+                TextComponent({
+                    title: 'Less than', 
+                    content: 'You chose a number less than fifty'
+                })
             ],
             terminates: true
         },
         {
             id: 'overFifty',
             components: [
-                TextComponent('Young Gun!', 'You chose a number over fifty')
+                TextComponent({
+                    title: 'More than', 
+                    content: 'You chose a number over fifty'
+                })
             ],
             terminates: true
         }
